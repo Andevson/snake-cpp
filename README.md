@@ -1,6 +1,6 @@
 # Jogo-da-cobrinha #
 
-## Jogo da cobrinha feito em C++, com interface exibida no terminal do windows, controles via teclado e salvamento de pontuações. ##<hr>
+## Jogo da cobrinha feito em C++, com interface exibida no CMD Windows, controles via teclado e salvamento de pontuações. ##<hr>
 ![Screenshot](print1.jpg)<br>
 *Exibição colorida usando comandos do CMD Windows.*<br><hr>
 ![Screenshot](print2.jpg)<br>
