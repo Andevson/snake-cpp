@@ -1,9 +1,8 @@
 #include <stdlib.h>
+#include "mat.h"
 
 #ifndef OBJECT_CPP
 #define OBJECT_CPP
-
-#include "mat.h"
 
 using namespace std;
 
@@ -12,7 +11,6 @@ class snake {
 	snake* next = NULL;
 	_2D position = { 1, 1 };
 	_2D aceleration = { 0, 0 };
-	int weight = 1;
 
 	public:
 	snake(){
@@ -23,9 +21,6 @@ class snake {
 	}
 	_2D getPosition(void){
 		return position;
-	}
-	int getWeight(void){
-		return weight;
 	}
 	snake* getNext(void){
 		return next;
@@ -45,7 +40,6 @@ class snake {
 		setPosition(sum(position, aceleration));
 	}
 	void grow(){
-		weight += 1;
 		if(next != NULL){
 			next->grow();
 		}else{
@@ -120,7 +114,7 @@ class fruit {
 			life_time = 9999;
 			break;
 			case 'b':
-			life_time = 10;
+			life_time = 20;
 			break;
 			default :
 			life_time = 9999;
@@ -151,31 +145,35 @@ class fruit {
 class objects {
 
 	private:
+	int length = 0;
 	fruit fruit_array[32] = {};
 	snake* game_snake = NULL;
 	
 	public:
 	object(void){
-		//
+		length = 0;
 	}
-	int quantity = 0;
 	void newSnake(_2D new_position){
 		game_snake = new snake(new_position);
 	}
 	void newFruit(_2D stage_size) {
 		fruit* new_fruit = new fruit(random(stage_size), 'f');
-		if (quantity < 30) {
-			quantity += 1;
-			fruit_array[quantity] = *new_fruit;
+		if (getLength() < 30) {
+			setLength(getLength() + 1);
+			fruit_array[getLength()] = *new_fruit;
 		}
 		delete new_fruit;
 	}
 	void newBonus(_2D stage_size) {
-		fruit* new_fruit = new fruit(random(stage_size), 'b');
-		if (quantity < 30) {
-			quantity += 1;
-			fruit_array[quantity] = *new_fruit;
+		fruit* new_bonus = new fruit(random(stage_size), 'b');
+		if (getLength() < 30) {
+			setLength(getLength() + 1);
+			fruit_array[getLength()] = *new_bonus;
 		}
+		delete new_bonus;
+	}
+	int getLength(void){
+		return length;
 	}
 	fruit getFruit(int new_index) {
 		return fruit_array[new_index];
@@ -187,23 +185,26 @@ class objects {
 			return 0;
 		}
 	}
+	void setLength(int new_length){
+		length = new_length;
+	}
 	void removeObj(int new_index) {
 		int index_scan = new_index;
-		while(index_scan < quantity){
+		while(index_scan < getLength()){
 			fruit_array[index_scan] = fruit_array[index_scan + 1];
 			index_scan++;
 		}
-		quantity -= 1;
+		setLength(getLength() - 1);
 	}
 	void removeSnake(void){
 		delete game_snake;
 		game_snake = NULL;
 	}
 	void removeFruits(void){
-		quantity = 0;
+		setLength(0);
 	}
 	void update(void) {
-		for(int i = 1; i <= quantity; i++){
+		for(int i = 1; i <= getLength(); i++){
 			fruit_array[i].update();
 			if(fruit_array[i].getLifeTime() < 0){
 				if(fruit_array[i].getType() == 'b'){
@@ -211,16 +212,12 @@ class objects {
 				}
 			}
 		}
-		if(quantity == 0){
-			newFruit(STAGE);
-		}
 	}
-	void reset(void){
+	void reset(_2D middle_stage){
 		removeSnake();
 		removeFruits();
-		newSnake(MIDDLE_STAGE);
+		newSnake(middle_stage);
 	}
-	
 };
 
 #endif
