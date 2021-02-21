@@ -1,17 +1,14 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "mat.h"
 
 #ifndef CONFIG_CPP
 #define CONFIG_CPP
 
-#include "mat.h"
-
 using namespace std;
 
 //Global vars.
-#define STAGE {20, 20}
-#define MIDDLE_STAGE {10, 10}
 #define COLOR_SNAKE std::cout << "\x1b[32m"//green.
 #define COLOR_FRUIT std::cout << "\x1b[31m"//Red.
 #define COLOR_BONUS std::cout << "\x1b[35m"//Magenta.
@@ -24,16 +21,24 @@ using namespace std;
 class game_config {
 
     private:
+    //Game configuration
+    _2D stage = { 20, 20 };
     //Data storage
     fstream data_scores;
     string scores[10] = {"0","0","0","0","0","0","0","0","0","0",};
-    
+
     public:
-    char game_status = 'j';
-    int score = 0;
-    _2D stage = { 20, 20 };
+    _2D getStage(void){
+        return stage;
+    }
+    _2D getMiddleStage(void){
+        return {(int)(stage.x/ 2), (int)(stage.y/ 2)};
+    }
     string getData(int index){
         return scores[index];
+    }
+    void setStage(_2D new_stage){
+        stage = new_stage;
     }
     //Load history of scores
     void load(void) {
