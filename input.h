@@ -1,16 +1,8 @@
 #include <conio.h>
+#include "mat.h"
 
 #ifndef INPUT_CPP
 #define INPUT_CPP
-
-#include "mat.h"
-
-void throwError(string message){
-	system("cls");
-	std::cout << "message";
-	Sleep(1000);
-	system(EXIT_SUCCESS);
-}
 
 // convert key into axis
 _2D getAxis(void) {
